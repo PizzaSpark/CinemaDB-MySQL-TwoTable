@@ -61,7 +61,7 @@ Public Class ReservationForm
         Dim resIDInt As Integer
 
         If Integer.TryParse(resID, resIDInt) = False Then
-            MessageBox.Show("Conversion of Int MovieID failed")
+            MessageBox.Show("Conversion of Int ReservationID failed")
         Else
             Dim result As Tuple(Of Integer, String, Integer, Integer) = SearchDataReservation(resIDInt)
 
@@ -160,5 +160,45 @@ Public Class ReservationForm
 
     Private Sub addnewbtn_Click(sender As Object, e As EventArgs) Handles addnewbtn.Click
         tickettypecmb.Enabled = True
+    End Sub
+
+    Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
+        Try
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                ' Get the selected row
+                Dim selectedRow As DataGridViewRow = DataGridView1.Rows(e.RowIndex)
+
+                ' Retrieve the values from the selected row
+                Dim resID As Integer = selectedRow.Cells("ReservationID").Value
+                Dim ticketType As String = selectedRow.Cells("TicketType").Value.ToString()
+                Dim cusID As Integer = selectedRow.Cells("CustomerID").Value
+                Dim movID As Integer = selectedRow.Cells("MovieID").Value
+
+
+                ' Populate the text boxes with the retrieved values
+                searchreservationtxt.Text = resID
+                tickettypecmb.Text = ticketType
+                searchcustomertxt.Text = cusID
+                searchmovietxt.Text = movID
+
+                Dim resultc As Tuple(Of Integer, String, String, String, String, Integer) = SearchDataCustomer(cusID)
+
+                searchcustomertxt.Text = resultc.Item1
+                customerfirstnametxt.Text = resultc.Item2
+                customerlastnametxt.Text = resultc.Item3
+                customermiddlenametxt.Text = resultc.Item4
+                customeremailtxt.Text = resultc.Item5
+                agetxt.Text = resultc.Item6
+
+                Dim resultm As Tuple(Of Integer, String, String, Integer) = SearchDataMovie(movID)
+
+                searchmovietxt.Text = resultm.Item1
+                movienametxt.Text = resultm.Item2
+                moviegenretxt.Text = resultm.Item3
+                moviedurationtxt.Text = resultm.Item4
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Clicked cell does not contain any text")
+        End Try
     End Sub
 End Class

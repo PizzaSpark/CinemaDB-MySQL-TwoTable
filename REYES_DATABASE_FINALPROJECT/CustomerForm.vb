@@ -128,32 +128,6 @@ Public Class CustomerForm
         End If
     End Sub
 
-    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
-        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
-            ' Get the selected row
-            Dim selectedRow As DataGridViewRow = DataGridView1.Rows(e.RowIndex)
-
-            ' Retrieve the values from the selected row
-            Dim id As Integer = selectedRow.Cells("CustomerID").Value.ToString()
-            Dim firstname As String = selectedRow.Cells("CustomerFirstName").Value.ToString()
-            Dim lastname As String = selectedRow.Cells("CustomerLastName").Value.ToString()
-            Dim middlename As String = selectedRow.Cells("CustomerMiddleName").Value.ToString()
-            Dim email As String = selectedRow.Cells("CustomerEmail").Value.ToString()
-            Dim age As Integer = selectedRow.Cells("CustomerAge").Value.ToString()
-
-
-
-
-            ' Populate the text boxes with the retrieved values
-            customerIDtxt.Text = id
-            firstNametxt.Text = firstname
-            lastNametxt.Text = lastname
-            middlenametxt.Text = middlename
-            emailtxt.Text = email
-            agetxt.Text = age
-        End If
-    End Sub
-
     Private Sub enableTxtBoxes()
         firstNametxt.Enabled = True
         lastNametxt.Enabled = True
@@ -176,5 +150,32 @@ Public Class CustomerForm
         middlenametxt.Text = String.Empty
         emailtxt.Text = String.Empty
         agetxt.Text = String.Empty
+    End Sub
+
+    Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
+        Try
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                ' Get the selected row
+                Dim selectedRow As DataGridViewRow = DataGridView1.Rows(e.RowIndex)
+
+                ' Retrieve the values from the selected row
+                Dim id As Integer = selectedRow.Cells("CustomerID").Value.ToString()
+                Dim firstname As String = selectedRow.Cells("CustomerFirstName").Value.ToString()
+                Dim lastname As String = selectedRow.Cells("CustomerLastName").Value.ToString()
+                Dim middlename As String = selectedRow.Cells("CustomerMiddleName").Value.ToString()
+                Dim email As String = selectedRow.Cells("CustomerEmail").Value.ToString()
+                Dim age As Integer = selectedRow.Cells("CustomerAge").Value.ToString()
+
+                ' Populate the text boxes with the retrieved values
+                customerIDtxt.Text = id
+                firstNametxt.Text = firstname
+                lastNametxt.Text = lastname
+                middlenametxt.Text = middlename
+                emailtxt.Text = email
+                agetxt.Text = age
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Clicked cell does not contain any text")
+        End Try
     End Sub
 End Class

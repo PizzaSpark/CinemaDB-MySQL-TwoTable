@@ -127,22 +127,26 @@ Public Class MovieForm
         moviedurationtxt.Text = String.Empty
     End Sub
 
-    Private Sub DataGridView1_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellContentClick
-        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
-            ' Get the selected row
-            Dim selectedRow As DataGridViewRow = DataGridView1.Rows(e.RowIndex)
+    Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
+        Try
+            If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
+                ' Get the selected row
+                Dim selectedRow As DataGridViewRow = DataGridView1.Rows(e.RowIndex)
 
-            ' Retrieve the values from the selected row
-            Dim id As Integer = selectedRow.Cells("MovieID").Value.ToString()
-            Dim name As String = selectedRow.Cells("MovieName").Value.ToString()
-            Dim genre As String = selectedRow.Cells("MovieGenre").Value.ToString()
-            Dim duration As String = selectedRow.Cells("MovieDuration").Value.ToString()
+                ' Retrieve the values from the selected row
+                Dim id As Integer = selectedRow.Cells("MovieID").Value.ToString()
+                Dim name As String = selectedRow.Cells("MovieName").Value.ToString()
+                Dim genre As String = selectedRow.Cells("MovieGenre").Value.ToString()
+                Dim duration As String = selectedRow.Cells("MovieDuration").Value.ToString()
 
-            ' Populate the text boxes with the retrieved values
-            movieIDtxt.Text = id
-            movienametxt.Text = name
-            moviegenrecmb.Text = genre
-            moviedurationtxt.Text = duration
-        End If
+                ' Populate the text boxes with the retrieved values
+                movieIDtxt.Text = id
+                movienametxt.Text = name
+                moviegenrecmb.Text = genre
+                moviedurationtxt.Text = duration
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Clicked cell does not contain any text")
+        End Try
     End Sub
 End Class
