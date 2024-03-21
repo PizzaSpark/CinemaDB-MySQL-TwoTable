@@ -1,11 +1,12 @@
-﻿Imports System.Threading
+﻿Imports System.Windows
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 
-Public Class LOADING
+Public Class Loading
 
     Public Shared value As Integer = 0
     Public Shared loadingScreenText As String = ""
-    Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    Private Sub Loading_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Enabled = True
     End Sub
 
@@ -15,16 +16,17 @@ Public Class LOADING
         ProgressBar1.Value += 1
 
         If value > 90 Then
-            loadingScreenText = "complete"
+            loadingScreenText = "Loading Complete"
         ElseIf value > 60 Then
-            loadingScreenText = "database"
+            loadingScreenText = "Loading Modules"
         ElseIf value > 30 Then
-            loadingScreenText = "dashboard"
+            loadingScreenText = "Loading Forms"
         Else
-            loadingScreenText = "forms"
+            loadingScreenText = "Loading"
         End If
 
-        loading_txt.Text = String.Format("Loading {0}", loadingScreenText)
+        txtLoad.Text = String.Format("Loading {0}%", value)
+        txtLoading.Text = String.Format("{0}", loadingScreenText)
 
         If value >= ProgressBar1.Maximum Then
             Timer1.Enabled = False
@@ -35,8 +37,4 @@ Public Class LOADING
             Exit Sub
         End If
     End Sub
-
-
-
-
 End Class

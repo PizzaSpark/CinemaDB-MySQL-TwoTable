@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E1D1A477-7EC2-4EA8-88F0-14E875EA7BD0}</ProjectGuid>
+    <ProjectGuid>{C09C3356-6ABC-4F9C-8B50-72E9B446DCE8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>REYES_DATABASE_FINALPROJECT.My.MyApplication</StartupObject>
-    <RootNamespace>REYES_DATABASE_FINALPROJECT</RootNamespace>
-    <AssemblyName>REYES_DATABASE_FINALPROJECT</AssemblyName>
+    <StartupObject>MATEO_ParkRideTicketingSystem.My.MyApplication</StartupObject>
+    <RootNamespace>MATEO_ParkRideTicketingSystem</RootNamespace>
+    <AssemblyName>MATEO_ParkRideTicketingSystem</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -22,7 +22,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>REYES_DATABASE_FINALPROJECT.xml</DocumentationFile>
+    <DocumentationFile>MATEO_ParkRideTicketingSystem.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>REYES_DATABASE_FINALPROJECT.xml</DocumentationFile>
+    <DocumentationFile>MATEO_ParkRideTicketingSystem.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -113,36 +113,30 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomerForm.Designer.vb">
-      <DependentUpon>CustomerForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="CustomerForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="dbFunctions.vb" />
-    <Compile Include="LOGIN.vb">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LOGIN.Designer.vb">
-      <DependentUpon>LOGIN.vb</DependentUpon>
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LOADING.Designer.vb">
-      <DependentUpon>LOADING.vb</DependentUpon>
-    </Compile>
-    <Compile Include="LOADING.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Dashboard.Designer.vb">
       <DependentUpon>Dashboard.vb</DependentUpon>
     </Compile>
     <Compile Include="Dashboard.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MovieForm.Designer.vb">
-      <DependentUpon>MovieForm.vb</DependentUpon>
+    <Compile Include="dbModule.vb" />
+    <Compile Include="GuestForm.Designer.vb">
+      <DependentUpon>GuestForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="MovieForm.vb">
+    <Compile Include="GuestForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Loading.Designer.vb">
+      <DependentUpon>Loading.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Loading.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Login.Designer.vb">
+      <DependentUpon>Login.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -161,28 +155,31 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="ReservationForm.Designer.vb">
-      <DependentUpon>ReservationForm.vb</DependentUpon>
+    <Compile Include="RideForm.Designer.vb">
+      <DependentUpon>RideForm.vb</DependentUpon>
     </Compile>
-    <Compile Include="ReservationForm.vb">
+    <Compile Include="RideForm.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TicketForm.Designer.vb">
+      <DependentUpon>TicketForm.vb</DependentUpon>
+    </Compile>
+    <Compile Include="TicketForm.vb">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CustomerForm.resx">
-      <DependentUpon>CustomerForm.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LOGIN.resx">
-      <DependentUpon>LOGIN.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LOADING.resx">
-      <DependentUpon>LOADING.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Dashboard.resx">
       <DependentUpon>Dashboard.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MovieForm.resx">
-      <DependentUpon>MovieForm.vb</DependentUpon>
+    <EmbeddedResource Include="GuestForm.resx">
+      <DependentUpon>GuestForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Loading.resx">
+      <DependentUpon>Loading.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Login.resx">
+      <DependentUpon>Login.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
@@ -190,8 +187,11 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ReservationForm.resx">
-      <DependentUpon>ReservationForm.vb</DependentUpon>
+    <EmbeddedResource Include="RideForm.resx">
+      <DependentUpon>RideForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TicketForm.resx">
+      <DependentUpon>TicketForm.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

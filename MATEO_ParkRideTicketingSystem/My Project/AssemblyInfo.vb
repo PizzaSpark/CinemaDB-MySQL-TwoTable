@@ -8,17 +8,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("REYES_DATABASE_FINALPROJECT")>
+<Assembly: AssemblyTitle("MATEO_ParkRideTicketingSystem")>
 <Assembly: AssemblyDescription("")>
 <Assembly: AssemblyCompany("")>
-<Assembly: AssemblyProduct("REYES_DATABASE_FINALPROJECT")>
+<Assembly: AssemblyProduct("MATEO_ParkRideTicketingSystem")>
 <Assembly: AssemblyCopyright("Copyright ©  2023")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("10206c88-e8e2-4a19-a825-045e5e486258")>
+<Assembly: Guid("e83611bf-f55f-4fa7-974f-a2dfebe33af4")>
 
 ' Version information for an assembly consists of the following four values:
 '

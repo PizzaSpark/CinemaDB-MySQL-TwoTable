@@ -2,8 +2,9 @@
 Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports Google.Protobuf.WellKnownTypes
 Imports MySql.Data.MySqlClient
-Module dbFunctions
-    Dim connectionConfig As String = "server=localhost; user=root; password=12345; database=db_cinematicket;"
+
+Module dbModule
+    Dim connectionConfig As String = "server=localhost; user=root; password=12345; database=db_parkrideticketing;"
     Dim connection As New MySqlConnection(connectionConfig)
 
     Public Sub connectDB()
@@ -46,47 +47,42 @@ Module dbFunctions
         Return dataTable
     End Function
 
-    Public Function SearchDataCustomer(primaryKeyValue As Integer)
-        Dim id As Integer
-        Dim firstname As String
-        Dim lastname As String
-        Dim middlename As String
-        Dim email As String
-        Dim age As Integer
-
-        Dim query As String = $"SELECT * FROM tbl_customer WHERE CustomerID = @primaryKeyValue"
-        Dim command As New MySqlCommand(query, connection)
-        command.Parameters.AddWithValue("@primaryKeyValue", primaryKeyValue)
-
-        ' Execute the command and retrieve a data reader
-        Dim reader As MySqlDataReader = command.ExecuteReader()
-
-        ' Read the data from the reader
-        If reader.Read() Then
-            ' Get the values from the reader for each column
-            id = reader("CustomerID")
-            firstname = reader("CustomerFirstName").ToString()
-            lastname = reader("CustomerLastName").ToString()
-            middlename = reader("CustomerMiddleName").ToString()
-            email = reader("CustomerEmail").ToString()
-            age = reader("CustomerAge")
-
-        Else
-            MessageBox.Show("No data found for the given primary key.")
-        End If
-
-        reader.Close()
-
-        Return Tuple.Create(id, firstname, lastname, middlename, email, age)
-    End Function
-
-    Public Function SearchDataMovie(primaryKeyValue As Integer)
+    Public Function SearchDataGuest(primaryKeyValue As Integer)
         Dim id As Integer
         Dim name As String
-        Dim genre As String
-        Dim duration As Integer
+        Dim age As Integer
+        Dim weight As Integer
+        Dim height As Integer
 
-        Dim query As String = $"SELECT * FROM tbl_movie WHERE MovieID = @primaryKeyValue"
+        Dim query As String = $"SELECT * FROM tbl_guest WHERE GuestID = @primaryKeyValue"
+        Dim command As New MySqlCommand(query, connection)
+        command.Parameters.AddWithValue("@primaryKeyValue", primaryKeyValue)
+
+        Dim reader As MySqlDataReader = command.ExecuteReader()
+
+        If reader.Read() Then
+            id = reader("GuestID")
+            name = reader("GuestName").ToString()
+            age = reader("GuestAge")
+            weight = reader("GuestWeight")
+            height = reader("GuestHeight")
+        Else
+            MessageBox.Show("No data found for the given primary key.")
+        End If
+
+        reader.Close()
+
+        Return Tuple.Create(id, name, age, weight, height)
+    End Function
+
+    Public Function SearchDataRide(primaryKeyValue As Integer)
+        Dim id As Integer
+        Dim name As String
+        Dim seatCapacity As Integer
+        Dim duration As Integer
+        Dim waitTime As Integer
+
+        Dim query As String = $"SELECT * FROM tbl_ride WHERE RideID = @primaryKeyValue"
         Dim command As New MySqlCommand(query, connection)
         command.Parameters.AddWithValue("@primaryKeyValue", primaryKeyValue)
 
@@ -96,36 +92,37 @@ Module dbFunctions
         ' Read the data from the reader
         If reader.Read() Then
             ' Get the values from the reader for each column
-            id = reader("MovieID")
-            name = reader("MovieName").ToString()
-            genre = reader("MovieGenre").ToString()
-            duration = reader("MovieDuration")
+            id = reader("RideId")
+            name = reader("RideName").ToString()
+            seatCapacity = reader("RideSeatCapacity")
+            duration = reader("RideDuration")
+            waitTime = reader("RideWaitTime")
         Else
             MessageBox.Show("No data found for the given primary key.")
         End If
 
         reader.Close()
 
-        Return Tuple.Create(id, name, genre, duration)
+        Return Tuple.Create(id, name, seatCapacity, duration, waitTime)
     End Function
 
-    Public Function SearchDataReservation(primaryKeyValue As Integer)
-        Dim resID As Integer
+    Public Function SearchDataTicket(primaryKeyValue As Integer)
+        Dim tixID As Integer
         Dim ticketType As String
-        Dim cusID As Integer
-        Dim movID As Integer
+        Dim guestID As Integer
+        Dim rideID As Integer
 
-        Dim query As String = $"SELECT * FROM tbl_reservation WHERE ReservationID = @primaryKeyValue"
+        Dim query As String = $"SELECT * FROM tbl_ticket WHERE TicketID = @primaryKeyValue"
         Dim command As New MySqlCommand(query, connection)
         command.Parameters.AddWithValue("@primaryKeyValue", primaryKeyValue)
 
         Dim reader As MySqlDataReader = command.ExecuteReader()
 
         If reader.Read() Then
-            resID = reader("ReservationID")
+            tixID = reader("TicketID")
             ticketType = reader("TicketType")
-            cusID = reader("CustomerID")
-            movID = reader("MovieID")
+            guestID = reader("GuestID")
+            rideID = reader("RideID")
 
 
         Else
@@ -134,45 +131,24 @@ Module dbFunctions
         End If
 
         reader.Close()
-        Return Tuple.Create(resID, ticketType, cusID, movID)
+        Return Tuple.Create(tixID, ticketType, guestID, rideID)
     End Function
 
-    Public Sub AddCustomerData(id As Integer, firstname As String, lastname As String, middlename As String, email As String, age As Integer)
+    Public Sub AddGuestData(id As Integer, name As String, age As Integer, weight As Integer, height As Integer)
         Try
-            Dim query As String = "INSERT INTO tbl_customer (CustomerID, CustomerFirstName, CustomerLastName, CustomerMiddleName, CustomerEmail, CustomerAge) VALUES (@id, @firstname, @lastname, @middlename, @email, @age)"
-            Dim command As New MySqlCommand(query, connection)
-
-            ' Set parameter values
-            command.Parameters.AddWithValue("@id", id)
-            command.Parameters.AddWithValue("@firstname", firstname)
-            command.Parameters.AddWithValue("@lastname", lastname)
-            command.Parameters.AddWithValue("@middlename", middlename)
-            command.Parameters.AddWithValue("@email", email)
-            command.Parameters.AddWithValue("@age", age)
-
-            ' Execute the command
-            command.ExecuteNonQuery()
-
-
-        Catch ex As Exception
-            ' Handle error
-            MessageBox.Show("Failed to insert data: " & ex.Message)
-        End Try
-    End Sub
-
-    Public Sub AddMovieData(id As Integer, name As String, genre As String, duration As Integer)
-        Try
-            Dim query As String = "INSERT INTO tbl_movie (MovieID, MovieName, MovieGenre, MovieDuration) VALUES (@id, @name, @genre, @duration)"
+            Dim query As String = "INSERT INTO tbl_guest (GuestID, GuestName, GuestAge, GuestWeight, GuestHeight) VALUES (@id, @name, @age, @weight, @height)"
             Dim command As New MySqlCommand(query, connection)
 
             ' Set parameter values
             command.Parameters.AddWithValue("@id", id)
             command.Parameters.AddWithValue("@name", name)
-            command.Parameters.AddWithValue("@genre", genre)
-            command.Parameters.AddWithValue("@duration", duration)
+            command.Parameters.AddWithValue("@age", age)
+            command.Parameters.AddWithValue("@weight", weight)
+            command.Parameters.AddWithValue("@height", height)
 
             ' Execute the command
             command.ExecuteNonQuery()
+
 
         Catch ex As Exception
             ' Handle error
@@ -180,17 +156,38 @@ Module dbFunctions
         End Try
     End Sub
 
-    Public Sub AddReservationData(ticketType As String, customerID As Integer, movieID As Integer)
+    Public Sub AddRideData(id As Integer, name As String, seatcapacity As Integer, duration As Integer, waittime As Integer)
         Try
-            Dim query As String = "INSERT INTO tbl_reservation (ReservationID, TicketType, CustomerID, MovieID) VALUES (@rid, @tickettype, @cid, @mid)"
+            Dim query As String = "INSERT INTO tbl_ride (RideID, RideName, RideSeatCapacity, RideDuration, RideWaitTime) VALUES (@id, @name, @seatcapacity, @duration, @waittime)"
             Dim command As New MySqlCommand(query, connection)
 
-            Dim idcombine As String = customerID.ToString() + movieID.ToString()
             ' Set parameter values
-            command.Parameters.AddWithValue("@rid", idcombine)
-            command.Parameters.AddWithValue("@tickettype", ticketType)
-            command.Parameters.AddWithValue("@cid", customerID)
-            command.Parameters.AddWithValue("@mid", movieID)
+            command.Parameters.AddWithValue("@id", id)
+            command.Parameters.AddWithValue("@name", name)
+            command.Parameters.AddWithValue("@seatcapacity", seatcapacity)
+            command.Parameters.AddWithValue("@duration", duration)
+            command.Parameters.AddWithValue("@waittime", waittime)
+
+            ' Execute the command
+            command.ExecuteNonQuery()
+
+        Catch ex As Exception
+            ' Handle error
+            MessageBox.Show("Failed to insert data: " & ex.Message)
+        End Try
+    End Sub
+
+    Public Sub AddTicketData(ticketType As String, guestID As Integer, rideID As Integer)
+        Try
+            Dim query As String = "INSERT INTO tbl_ticket (TicketID, TicketType, GuestID, RideID) VALUES (@tid, @type, @gid, @rid)"
+            Dim command As New MySqlCommand(query, connection)
+
+            Dim idcombine As String = guestID.ToString() + rideID.ToString()
+            ' Set parameter values
+            command.Parameters.AddWithValue("@tid", idcombine)
+            command.Parameters.AddWithValue("@type", ticketType)
+            command.Parameters.AddWithValue("@gid", guestID)
+            command.Parameters.AddWithValue("@rid", rideID)
 
             ' Execute the command
             command.ExecuteNonQuery()
@@ -202,32 +199,14 @@ Module dbFunctions
         End Try
     End Sub
 
-    Public Sub UpdateCustomerData(primaryKeyValue As Integer, newFirstName As String, newLastName As String, newMiddleName As String, newEmail As String, newAge As Integer)
-        Dim query As String = "UPDATE tbl_customer SET CustomerFirstName = @NewFirstName, CustomerLastName = @NewLastName, CustomerMiddleName = @NewMiddleName, CustomerEmail = @NewEmail, CustomerAge = @NewAge WHERE CustomerID = @PrimaryKeyValue"
-        Dim command As New MySqlCommand(query, connection)
-
-        command.Parameters.AddWithValue("@NewFirstName", newFirstName)
-        command.Parameters.AddWithValue("@NewLastName", newLastName)
-        command.Parameters.AddWithValue("@NewMiddleName", newMiddleName)
-        command.Parameters.AddWithValue("@NewEmail", newEmail)
-        command.Parameters.AddWithValue("@NewAge", newAge)
-        command.Parameters.AddWithValue("@PrimaryKeyValue", primaryKeyValue)
-        Dim rowsAffected As Integer = command.ExecuteNonQuery()
-
-        If rowsAffected > 0 Then
-            Console.WriteLine("Data updated successfully.")
-        Else
-            Console.WriteLine("No data found for the given primary key.")
-        End If
-    End Sub
-
-    Public Sub UpdateMovieData(primaryKeyValue As Integer, newName As String, newGenre As String, newDuration As Integer)
-        Dim query As String = "UPDATE tbl_movie SET MovieName = @NewName, MovieGenre = @NewGenre, MovieDuration = @NewDuration WHERE MovieID = @PrimaryKeyValue"
+    Public Sub UpdateGuestData(primaryKeyValue As Integer, newName As String, newAge As Integer, newWeight As Integer, newHeight As Integer)
+        Dim query As String = "UPDATE tbl_guest SET GuestName = @NewName, GuestAge = @NewAge, GuestWeight = @NewWeight, GuestHeight = @NewHeight WHERE GuestID = @PrimaryKeyValue"
         Dim command As New MySqlCommand(query, connection)
 
         command.Parameters.AddWithValue("@NewName", newName)
-        command.Parameters.AddWithValue("@NewGenre", newGenre)
-        command.Parameters.AddWithValue("@NewDuration", newDuration)
+        command.Parameters.AddWithValue("@NewAge", newAge)
+        command.Parameters.AddWithValue("@NewWeight", newWeight)
+        command.Parameters.AddWithValue("@NewHeight", newHeight)
         command.Parameters.AddWithValue("@PrimaryKeyValue", primaryKeyValue)
         Dim rowsAffected As Integer = command.ExecuteNonQuery()
 
@@ -238,4 +217,21 @@ Module dbFunctions
         End If
     End Sub
 
+    Public Sub UpdateRideData(primaryKeyValue As Integer, newName As String, newSeatCapacity As Integer, newDuration As Integer, newWaitTime As Integer)
+        Dim query As String = "UPDATE tbl_ride SET RideName = @NewName, RideSeatCapacity = @NewSeatCapacity, RideDuration = @NewDuration, RideWaitTime = @NewWaitTime WHERE RideID = @PrimaryKeyValue"
+        Dim command As New MySqlCommand(query, connection)
+
+        command.Parameters.AddWithValue("@NewName", newName)
+        command.Parameters.AddWithValue("@NewSeatCapacity", newSeatCapacity)
+        command.Parameters.AddWithValue("@NewDuration", newDuration)
+        command.Parameters.AddWithValue("@NewWaitTime", newWaitTime)
+        command.Parameters.AddWithValue("@PrimaryKeyValue", primaryKeyValue)
+        Dim rowsAffected As Integer = command.ExecuteNonQuery()
+
+        If rowsAffected > 0 Then
+            Console.WriteLine("Data updated successfully.")
+        Else
+            Console.WriteLine("No data found for the given primary key.")
+        End If
+    End Sub
 End Module
